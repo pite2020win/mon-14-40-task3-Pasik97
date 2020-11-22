@@ -1,0 +1,102 @@
+{
+   "SchoolA" : {
+      "1": [
+         {
+            "name": "Jan",
+            "surname": "Kowalski",
+            "grades": [1,3,5,2,1,3,6,1],
+            "attendence": 7,
+            "absence": 3
+         },
+         {
+            "name": "Jakub",
+            "surname": "Nowak",
+            "grades": [5,5,3,2,1],
+            "attendence": 12,
+            "absence": 0
+         }
+      ],
+      "2": [
+         {
+            "name": "Staszek",
+            "surname": "Parek",
+            "grades": [1,3,6,1],
+            "attendence": 3,
+            "absence": 3
+         },
+         {
+            "name": "Bartek",
+            "surname": "Znuj",
+            "grades": [1,1,2,3,2,2],
+            "attendence": 2,
+            "absence": 11
+         }
+      ],
+      "3": [
+         {
+            "name": "Krzysztof",
+            "surname": "Kowal",
+            "grades": [6,6,6,2,3,5],
+            "attendence": 11,
+            "absence": 0
+         },
+         {
+            "name": "Mirek",
+            "surname": "Fer",
+            "grades": [1,2,3,4,5,6,3,2],
+            "attendence": 10,
+            "absence": 6
+         }
+      ]
+   },
+   "SchoolB" : {
+      "1": [
+         {
+            "name": "Bartek",
+            "surname": "Fec",
+            "grades": [1,1,1,2,3,1],
+            "attendence": 3,
+            "absence": 11
+         },
+         {
+            "name": "Mikołaj",
+            "surname": "Dobrzynski",
+            "grades": [5,5,5,5,4,5,2],
+            "attendence": 8,
+            "absence": 8
+         }
+      ],
+      "2": [
+         {
+            "name": "Adrian",
+            "surname": "Kor",
+            "grades": [1,3,6,1,6,6,6],
+            "attendence": 8,
+            "absence": 3
+         },
+         {
+            "name": "Konrad",
+            "surname": "Blik",
+            "grades": [6,6,6,2,1,3,6],
+            "attendence": 7,
+            "absence": 5
+         }
+      ],
+      "3": [
+         {
+            "name": "Piotr",
+            "surname": "Sok",
+            "grades": [6,6,6,2,3,5,2,1,1],
+            "attendence": 12,
+            "absence": 6
+         },
+         {
+            "name": "Waclaw",
+            "surname": "Leb",
+            "grades": [3,1,2,2,1,5,6],
+            "attendence": 4,
+            "absence": 7
+         }
+      ]
+   }
+}

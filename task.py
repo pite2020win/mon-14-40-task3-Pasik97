@@ -1,60 +1,147 @@
-# Class diary
-#
-# Create program for handling lesson scores.
-# Use python to handle student (highscool) class scores, and attendance.
-# Make it possible to:
-# - Get students total average score (average across classes)
-# - get students average score in class
-# - hold students name and surname
-# - Count total attendance of student
-#
-# Please, use your imagination and create more functionalities.
-# Your project should be able to handle entire school(s?).
-# If you have enough courage and time, try storing (reading/writing)
-# data in text files (YAML, JSON).
-# If you have even more courage, try implementing user interface (might be text-like).
-#
-#Try to expand your implementation as best as you can. 
-#Think of as many features as you can, and try implementing them.
-#Make intelligent use of pythons syntactic sugar (overloading, iterators, generators, etc)
-#Most of all: CREATE GOOD, RELIABLE, READABLE CODE.
-#The goal of this task is for you to SHOW YOUR BEST python programming skills.
-#Impress everyone with your skills, show off with your code.
-#
-#Your program must be runnable with command "python task.py".
-#Show some usecases of your library in the code (print some things)
-#
-#When you are done upload this code to your github repository. 
-#
-#Delete these comments before commit!
-#Good luck.
+import json
 
-import school
-import classes
-import student
+def get_student_class_school(surname, schools):
+   for x in schools:
+      info = x.have_student(surname)
+      if(x.have_student(surname)):
+         return info
+
+def find_school_students(schools, schoolName):
+   for x in schools:
+      if(x.name == schoolName):
+         x.print_all_students()
+
+class School:
+   def __init__(self, schoolName):
+      self.name = schoolName
+      self.classes = {}
+
+   def get_student_avg(self, studentSurname, className):
+      return self.classes[className].students[studentSurname].get_marks_avg()
+
+   def all_school_grades(self):
+      grades = []
+      for x in self.classes:
+         for st in self.classes[x].students:
+            grades += self.classes[x].students[st].marks
+
+      return grades
+
+   def have_student(self, surname):
+      for x in self.classes:
+         if surname in self.classes[x].students:
+            return self.name, self.classes[x].className
+
+      return False
+
+   def add_class(self, classToAdd):
+      self.classes[classToAdd.className]=classToAdd
+
+   def print_classes(self):
+      for x in self.classes:
+         print(self.classes[x].className)
+
+   def students_avg(self):
+      avg = 0
+      for x in self.classes:
+         avg += self.classes[x].get_class_avg()
+      
+      return avg/len(self.classes)
+
+   def students_avg_in_class(self, className): 
+      return self.classes[className].get_class_avg()
+
+   def print_class_students(self, className): 
+      return self.classes[className].print_students()
+
+   def print_all_students(self): 
+      for x in self.classes:
+         print(self.classes[x].print_students())
+
+   def get_school_attendence_avg(self):
+      avg = 0
+      for x in self.classes:
+         avg += self.classes[x].get_class_attendence()
+      
+      return avg/len(self.classes)
+
+class Classes:
+   def __init__(self, className, students):
+      self.className = className
+      self.students = {}
+
+   def get_class_avg(self):
+      avg = 0
+      for x in self.students:
+         avg += self.students[x].get_marks_avg()
+
+      return avg/len(self.students)
+
+   def print_students(self):
+      for x in self.students:
+         print(self.students[x].name, self.students[x].surname)
+
+   def get_class_attendence(self):
+      avg = 0
+      for x in self.students:
+         avg += self.students[x].get_attendence_avg()
+
+      return avg/len(self.students)
+
+class Student:
+   def __init__(self, name, surname, marks, attendence, absence):
+      self.name = name
+      self.surname = surname
+      self.marks = marks
+      self.attendence = attendence
+      self.absence = absence
+      self.totalHours = attendence + absence
+
+   def get_marks_avg(self):
+      return sum(self.marks)/len(self.marks)
+
+   def get_attendence_avg(self):
+      return self.attendence / self.totalHours
+
+def read_file():
+   data = json.load(open("data.json"))
+
+   schools = []
+
+   for schoolName, classes in data.items():
+      newSchool = School(schoolName)
+
+      for className, students in classes.items():
+         newClass = Classes(className, [])
+
+         for student in students:
+            newStudent = Student(student['name'], student['surname'], student['grades'], student['attendence'], student['absence'])
+            newClass.students[newStudent.surname] = newStudent
+
+         newSchool.add_class(newClass)
+
+      schools.append(newSchool)
+
+   return schools
+
 
 if __name__ == "__main__":
-   kowalski = student.Student('Jan', 'Kowalski', [1,3,5,2,1,3,6,1], 7, 3)
-   nowak = student.Student('Jakub', 'Nowak', [5,5,3,2,1], 12, 0)
-   parek = student.Student('Staszek', 'Parek', [1,3,6,1], 3, 3)
-   znuj = student.Student('Bartek', 'Znuj', [1,1,2,3,2,2], 2, 11)
-   fer = student.Student('Mirek', 'Fer', [1,2,3,4,5,6,7,8], 10, 6)
+   schools = read_file()
+   
+   for x in schools:
+      print(x.name)
+      print('School grades avg: {}'.format(x.students_avg()))
+      print('School attendence avg: {}'.format(x.get_school_attendence_avg()))
+      print('School second class grades avg: {}'.format(x.students_avg_in_class('2')))
+      print('All grades in school: {}'.format(x.all_school_grades()))
+      print('\n')
 
-   firstClass = classes.Classes('1A', [kowalski, nowak, parek])
-   secondClass = classes.Classes('2A', [znuj, fer])
+   print('Parek avg grades: {}'.format(schools[0].get_student_avg("Parek", "2")))
 
-   highscool = school.School()
-   highscool.addClass(firstClass)
-   highscool.addClass(secondClass)
+   school, className = get_student_class_school("Kowal", schools)
 
-   print('Classes in school: ')
-   highscool.printClasses()
+   print('Kowal is in school {} and class {}'.format(school, className))
 
-   print('Students avg score across all classes: {}'.format(highscool.studetnsAvg()))
-
-   print('Students avg score in class 2A: {}'.format(highscool.studetnsAvgInClass('2A')))
-
-   print('Students in class 1A:')
-   highscool.printClassStudents('1A')
-
-   print('Scool average attendence: {}'.format(highscool.getSchoolAttendenceAvg()))
+   print('Students in SchoolB')
+   find_school_students(schools, 'SchoolB')
+   
